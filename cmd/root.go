@@ -1,5 +1,5 @@
 /*
-Copyright © 2019 NAME HERE &lt;EMAIL ADDRESS&gt;
+Copyright © 2019 NAME HERE <EMAIL ADDRESS>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -20,24 +20,13 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-
-	homedir "github.com/mitchellh/go-homedir"
-	"github.com/spf13/viper"
 )
 
-var cfgFile string
-
 // rootCmd represents the base command when called without any subcommands
-var rootCmd = cobra.Command{
-	Use:   "tale-gmail",
+var rootCmd = &cobra.Command{
+	Use:   "wordz",
 	Short: "Tool to simplify your email.",
-	Long: `Tool to simplify your email. 
-  If you’re like me, you receive way too many email newsletters every week and they clutter up your inbox.
-  Instead of unsubscribing from all of them in a fit of rage, This tool will captures these emails and 
-  moves them all into a single folder.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
+	Long:  `Tool to check meaning.`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -50,41 +39,6 @@ func Execute() {
 }
 
 func init() {
-	cobra.OnInitialize(initConfig)
-
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	rootCmd.PersistentFlags().StringVar(cfgFile, "config", "", "config file (default is $HOME/.wordz.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
+	versionCmd.PersistentFlags().String("foo", "", "A help for foo")
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-}
-
-// initConfig reads in config file and ENV variables if set.
-func initConfig() {
-	if cfgFile != "" {
-		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
-	} else {
-		// Find home directory.
-		home, err := homedir.Dir()
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-
-		// Search config in home directory with name ".wordz" (without extension).
-		viper.AddConfigPath(home)
-		viper.SetConfigName(".wordz")
-	}
-
-	viper.AutomaticEnv() // read in environment variables that match
-
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-	}
 }

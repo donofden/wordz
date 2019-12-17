@@ -12,7 +12,9 @@ limitations under the License.
 */
 package main
 
-import "github.com/donofden/wordz/cmd"
+import (
+	"github.com/donofden/wordz/cmd"
+)
 
 func main() {
 	cmd.Execute()
