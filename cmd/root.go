@@ -28,7 +28,7 @@ import (
 var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
-var rootCmd = &amp;cobra.Command{
+var rootCmd = cobra.Command{
 	Use:   "tale-gmail",
 	Short: "Tool to simplify your email.",
 	Long: `Tool to simplify your email. 
@@ -56,7 +56,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVar(&amp;cfgFile, "config", "", "config file (default is $HOME/.tale-gmail.yaml)")
+	rootCmd.PersistentFlags().StringVar(cfgFile, "config", "", "config file (default is $HOME/.tale-gmail.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
