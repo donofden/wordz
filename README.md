@@ -1,0 +1,2 @@
+# wordz
+A CLI Application
