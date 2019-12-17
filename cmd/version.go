@@ -22,7 +22,7 @@ import (
 )
 
 // versionCmd represents the version command
-var versionCmd = &amp;cobra.Command{
+var versionCmd = cobra.Command{
 	Use:   "version",
 	Short: "Get the version of the ap;lication.",
 	Long:  `Get the version of the ap;lication.`,
