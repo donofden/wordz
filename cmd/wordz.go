@@ -19,24 +19,22 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/donofden/wordz/pkg/wordz"
 	"github.com/spf13/cobra"
-	"github.com/donofden/wordz/pkg/search"
 )
 
 var wordCmd = &cobra.Command{
 	Use:   "find",
-	Short: "A brief description of your command",
-	Long:  `A longer description of count command.`,
+	Short: "This will get us synonyms, antonyms, definition & derivation of the given word.",
+	Long:  `This will get us synonyms, antonyms, definition & derivation of the given word.`,
 	Run: func(cmd *cobra.Command, args []string) {
-
 		if len(args) > 0 {
 			fmt.Println("Please wait while we search for the meaning...")
 		} else {
 			fmt.Println("Please Specify a word to find meaning.")
 			os.Exit(1)
 		}
-		wordz.SearchWord()
-		fmt.Println(args)
+		wordz.SearchWord(args[0])
 	},
 }
 

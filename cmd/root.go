@@ -39,6 +39,5 @@ func Execute() {
 }
 
 func init() {
-	versionCmd.PersistentFlags().String("foo", "", "A help for foo")
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
