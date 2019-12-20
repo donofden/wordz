@@ -20,6 +20,7 @@ import (
 	"os"
 
 	"github.com/donofden/wordz/pkg/wordz"
+	"github.com/gookit/color"
 	"github.com/spf13/cobra"
 )
 
@@ -29,9 +30,10 @@ var wordCmd = &cobra.Command{
 	Long:  `This will get us synonyms, antonyms, definition & derivation of the given word.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) > 0 {
-			fmt.Println("Please wait while we search for the meaning...")
+			color.Cyan.Println("Please wait while we search for the meaning...")
 		} else {
-			fmt.Println("Please Specify a word to find meaning.")
+			red := color.FgRed.Render
+			fmt.Println(red("Please Specify a word to find meaning."))
 			os.Exit(1)
 		}
 		wordz.SearchWord(args[0])

@@ -30,6 +30,7 @@ import (
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/mp3"
 	"github.com/faiface/beep/speaker"
+	"github.com/gookit/color"
 )
 
 // Pronunciations is JSON the response
@@ -116,51 +117,73 @@ func SearchWord(word string) {
 	s.Start()                           // Start the spinner
 	//time.Sleep(4 * time.Second)         // Run for some time to simulate work
 	fmt.Println("\n Word: ", word)
+	fmt.Println("")
+
 	body, err := apiRequest(word)
 	if err != nil {
 		log.Fatal(err)
 	}
 	json.Unmarshal(body, &oxford)
-	//fmt.Println(res)
-	//fmt.Println(string(body))
-	s.Stop() // Stop the spinner
+	s.Stop()
+	if oxford.ID == "" {
+		fmt.Println("No Result..")
+		os.Exit(0)
+	}
+	red := color.FgRed.Render
+	green := color.FgGreen.Render
+	gray := color.FgGray.Render
+	voiceActivate := os.Getenv("OXFORD_VOICE_ACTIVATE")
 
-	//export OXFORD_APPLICATION_ID="3e0f2d81"
-	//export OXFORD_APPLICATION_KEY="»cede5c20ad79e29608e62b3a0d16b2d3"
-	fmt.Println("ID: " + oxford.ID)
-	fmt.Println("Metadata Operation: " + oxford.Metadata.Operation)
-	fmt.Println("Metadata Provider: " + oxford.Metadata.Provider)
-	fmt.Println("Metadata Schema: " + oxford.Metadata.Schema)
-	fmt.Println("Results ID: " + oxford.Results[0].ID)
-	fmt.Println("Results Language: " + oxford.Results[0].Language)
-	fmt.Println("Results Type: " + oxford.Results[0].Type)
-	fmt.Println("Results Word: " + oxford.Results[0].Word)
+	for _, results := range oxford.Results {
+		for _, lexicalEntries := range results.LexicalEntries {
+			color.Println("<warning> -->>>>> " + results.Word + " </> " + green(lexicalEntries.LexicalCategory.Text))
 
-	fmt.Println("LexicalEntries: " + oxford.Results[0].LexicalEntries[0].Language)
-	fmt.Println("LexicalEntries: " + oxford.Results[0].LexicalEntries[0].Text)
+			for _, pronunciations := range lexicalEntries.Pronunciations {
+				fmt.Printf("\t Notation: %s  Phonetic: %s \n", red(pronunciations.PhoneticNotation), green(pronunciations.PhoneticSpelling))
+				if voiceActivate == "1" {
+					playPronunciations(pronunciations.AudioFile)
+				}
 
-	fmt.Println("LexicalEntries Entries Etymologies: " + oxford.Results[0].LexicalEntries[0].Entries[0].Etymologies[0])
+				for i := 0; len(pronunciations.Dialects) > i; i++ {
+					fmt.Println("\t Dialects: " + gray(pronunciations.Dialects[i]))
+				}
+			}
 
-	fmt.Println("LexicalEntries Entries Senses ID: " + oxford.Results[0].LexicalEntries[0].Entries[0].Senses[0].ID)
-	//fmt.Println("LexicalEntries Entries Senses EntryID: " + oxford.Results[0].LexicalEntries[0].Entries[0].Senses[0].ThesaurusLinks[0].EntryID)
-	//fmt.Println("LexicalEntries Entries Senses SenseID: " + oxford.Results[0].LexicalEntries[0].Entries[0].Senses[0].ThesaurusLinks[0].SenseID)
+			for _, entries := range lexicalEntries.Entries {
+				/*for i := 0; len(entries.Etymologies) > i; i++ {
+					fmt.Println("\t \t Etymologies: " + entries.Etymologies[i])
+				}*/
+				for _, senses := range entries.Senses {
+					for i := 0; len(senses.ShortDefinitions) > i; i++ {
+						fmt.Print("\n")
+						if i == 0 {
+							color.Light.Printf("\t %s ", "Short Definitions: ")
+						}
+						fmt.Println(" " + green(senses.ShortDefinitions[i]))
+					}
+					for i := 0; len(senses.Definitions) > i; i++ {
+						color.Light.Printf("\t %s ", "Definitions: ")
+						color.Println(" <error> " + senses.Definitions[i] + " </> ")
+					}
+					for i := 0; len(senses.Examples) > i; i++ {
+						if i == 0 {
+							fmt.Println("\t \t Example sentence: ")
+						}
+						color.Warn.Println("\t \t \t - " + senses.Examples[i].Text)
+					}
+					for i := 0; len(entries.Etymologies) > i; i++ {
+						if i == 0 {
+							fmt.Println("\t \t Etymologies: ")
+						}
+						color.Warn.Println("\t \t \t - " + entries.Etymologies[i])
+					}
 
-	//fmt.Println("LexicalEntries Entries Senses Examples Text: " + oxford.Results[0].LexicalEntries[0].Entries[0].Senses[0].Examples[0].Text)
-	//fmt.Println("LexicalEntries Entries Senses Examples Text: " + oxford.Results[0].LexicalEntries[0].Entries[0].Senses[0].Examples[1].Text)
+				}
+			}
+			fmt.Print("\n \n")
 
-	//fmt.Println("LexicalEntries Entries Senses shortDefinitions: " + oxford.Results[0].LexicalEntries[0].Entries[0].Senses[0].ShortDefinitions[0])
-
-	//fmt.Println("LexicalEntries Entries Senses Examples Text: " + oxford.Results[0].LexicalEntries[1].Entries[0].Senses[0].Examples[0].Text)
-	//fmt.Println("LexicalEntries Entries Senses shortDefinitions: " + oxford.Results[0].LexicalEntries[1].Entries[0].Senses[0].ShortDefinitions[0])
-
-	//fmt.Println("LexicalEntries LexicalCategory ID: " + oxford.Results[0].LexicalEntries[0].LexicalCategory.ID)
-	//fmt.Println("LexicalEntries LexicalCategory Text: " + oxford.Results[0].LexicalEntries[0].LexicalCategory.Text)
-
-	fmt.Println("LexicalEntries Pronunciations AudioFile: " + oxford.Results[0].LexicalEntries[0].Pronunciations[0].AudioFile)
-	fmt.Println("LexicalEntries Pronunciations Dialects: " + oxford.Results[0].LexicalEntries[0].Pronunciations[0].Dialects[0])
-	playPronunciations(oxford.Results[0].LexicalEntries[0].Pronunciations[0].AudioFile)
-	fmt.Println("Word: " + oxford.Word)
-
+		}
+	}
 }
 
 func apiRequest(word string) ([]byte, error) {
@@ -220,7 +243,6 @@ func downloadFile(filepath string, url string) (err error) {
 		return err
 	}
 	defer out.Close()
-	fmt.Println(out)
 	// Get the data
 	resp, err := http.Get(url)
 	if err != nil {

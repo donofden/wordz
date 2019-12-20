@@ -1,4 +1,5 @@
 # ıllıllı [ WORDZ ] ıllıllı
+
 A CLI Dictionary Application, where you type a word and get its meaning from Oxford Dictionaries. Based on the Oxford Dictionaries API. Wordz lookup should give you meaning, pronunciation, sample sentances, synonyms and antonyms (if applicable).
 
 ![Full screen](wordz-logo.png)
@@ -89,3 +90,35 @@ Please wait while we search for the meaning...
 
 Loading.. .. .. 🌏     ¯\\_(ツ)_/¯
  ```
+
+ ```cmd
+ ~ » wz excellent                                                                            
+Please wait while we search for the meaning...
+
+ Word:  excellent
+
+ -->>>>> excellent  Adjective
+	 Notation: IPA  Phonetic: ˈɛks(ə)l(ə)nt 
+	 Dialects: British English
+
+	 Short Definitions:   extremely good
+	 Definitions:    extremely good; outstanding  
+	 	 Example sentence: 
+	 	 	 - the lorry was in excellent condition
+	 	 	 - their results are excellent
+	 	 Etymologies: 
+	 	 	 - late Middle English (in the general sense ‘outstanding’ in either a good or bad way): from Old French, from Latin excellent-‘being pre-eminent’, from excellere (see excel). The current appreciatory sense dates from the early 17th century
+
+ 
+ -->>>>> excellent  Interjection
+	 Notation: IPA  Phonetic: ˈɛks(ə)l(ə)nt 
+	 Dialects: British English
+
+	 Short Definitions:   used to indicate approval or pleasure
+	 Definitions:    used to indicate approval or pleasure  
+	 	 Example sentence: 
+	 	 	 - ‘What a lovely idea! Excellent!’
+
+```
+
+![Full screen](output.png)
